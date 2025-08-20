@@ -3,45 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tên Bot Của Bạn</title>
+  <title>VioGPT</title>
 
   <!-- Description -->
   <meta name="description" content="Bot Discord xịn với lệnh vui chơi, quản trị và nhiều tính năng hấp dẫn.">
 
   <!-- Open Graph -->
   <meta property="og:title" content="VioGPT">
-  <meta property="og:description" content="Bot lấy api key free nên như chatgpt nhé các eiu :P ">
+  <meta property="og:description" content="Bot lấy api key free nên như chatgpt nhé các eiu :P">
   <meta property="og:image" content="https://yourdomain.com/images/bot-thumbnail.png">
   <meta property="og:url" content="https://viogpt.gg/">
   <meta property="og:type" content="website">
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="VioGPT">
-  <meta name="twitter:description" content="Bot Discord xịn với những khả năng tương tự như chatgpt nhưng free nhé mn :3 ">
-  <meta name="twitter:image" content="https://yourdomain.com/images/bot-thumbnail.png">
 
   <!-- Favicon -->
   <link rel="icon" href="https://yourdomain.com/images/favicon.png" type="image/png">
 
   <!-- CSS -->
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: rgb(247, 117, 219);
       text-align: center;
-      background: url("https://yourdomain.com/images/background.jpg") no-repeat center center/cover;
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      animation: fadeIn 2s ease-in-out;
+      overflow: hidden;
+    }
+
+    /* Canvas nền */
+    #particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      background-size: 400% 400%;
+      animation: gradientMove 20s ease infinite;
+    }
+
+    @keyframes gradientMove {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
     }
 
     .container {
@@ -71,7 +78,7 @@
       padding: 15px 30px;
       font-size: 1.2rem;
       color: white;
-      background: #5865F2; /* Discord màu xanh */
+      background: #5865F2;
       text-decoration: none;
       border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.5);
@@ -84,27 +91,19 @@
       transform: scale(1.1);
     }
 
-    /* Hiệu ứng */
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
+    /* Hiệu ứng chữ */
     @keyframes slideIn {
       from { transform: translateY(50px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
-
     @keyframes textPop {
       0% { transform: scale(0.5); opacity: 0; }
       100% { transform: scale(1); opacity: 1; }
     }
-
     @keyframes fadeInUp {
       from { transform: translateY(30px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
-
     @keyframes pulse {
       0% { transform: scale(1); }
       50% { transform: scale(1.05); }
@@ -113,11 +112,59 @@
   </style>
 </head>
 <body>
+  <!-- Nền hạt -->
+  <canvas id="particles"></canvas>
+
   <div class="container">
-    <h1>👑 VioGPT </h1>
+    <h1>👑 VioGPT</h1>
     <p>Bot lấy api key free nên như chatgpt nhé các eiu :P <br>
     Tham gia ngay để trải nghiệm!</p>
     <a class="btn" href="https://discord.com/oauth2/authorize?client_id=1401549735109857320" target="_blank">🚀 Mời Bot Vào Server</a>
+    <br><br>
+    <a class="btn" href="https://discord.gg/TgFNTnYRBK" target="_blank">🌐 Support Server</a>
+    <p style="margin-top:20px; font-size:0.9rem; color:#bbb;">Developed by <b>khangshark123</b></p>
   </div>
+
+  <!-- Script tạo particle -->
+  <script>
+    const canvas = document.getElementById("particles");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const particles = [];
+    for (let i = 0; i < 100; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 2,
+        dx: (Math.random() - 0.5) * 0.5,
+        dy: (Math.random() - 0.5) * 0.5
+      });
+    }
+
+    function drawParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(255,255,255,0.7)";
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+      });
+      requestAnimationFrame(drawParticles);
+    }
+    drawParticles();
+
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
 </body>
 </html>
+
+
