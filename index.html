@@ -1,170 +1,298 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VioGPT</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VioGPT | Discord Bot AI</title>
 
-  <!-- Description -->
-  <meta name="description" content="Bot Discord xịn với lệnh vui chơi, quản trị và nhiều tính năng hấp dẫn.">
+  <!-- SEO / Social Preview -->
+  <meta name="description" content="VioGPT — Bot Discord AI miễn phí, trò chuyện như ChatGPT, có game, quản trị, nhiệm vụ và nhiều thứ hay ho khác." />
+  <meta property="og:title" content="VioGPT — Discord Bot AI" />
+  <meta property="og:description" content="Thêm VioGPT vào server để trải nghiệm ChatGPT miễn phí + nhiều tính năng tuyệt vời!" />
+  <!-- TODO: Đổi link ảnh thumbnail bên dưới thành ảnh thật (1200x630) của bạn -->
+  <meta property="og:image" content="https://raw.githubusercontent.com/your-username/your-repo/main/preview.png" />
+  <!-- TODO: Đổi URL này thành domain thực tế sau khi deploy -->
+  <meta property="og:url" content="https://khangsadboy2607-lab.github.io/viogpt/" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="VioGPT">
-  <meta property="og:description" content="Bot lấy api key free nên như chatgpt nhé các eiu :P">
-  <meta property="og:image" content="https://yourdomain.com/images/bot-thumbnail.png">
-  <meta property="og:url" content="https://viogpt.gg/">
-  <meta property="og:type" content="website">
+  <!-- Favicon (sửa link nếu có) -->
+  <link rel="icon" href="https://fav.farm/✨" />
 
-  <!-- Favicon -->
-  <link rel="icon" href="https://yourdomain.com/images/favicon.png" type="image/png">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet" />
 
-  <!-- CSS -->
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: rgb(247, 117, 219);
-      text-align: center;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
+    :root{
+      --vio: #9d4edd;
+      --vio-2: #6f2dbd;
+      --blue: #5865F2;
+      --pink: #ff4ecf;
+      --aqua: #00e5ff;
+      --glass-bg: rgba(255,255,255,.08);
+      --glass-br: 24px;
+      --text: #eaeaf0;
+      --muted: #b8b8c7;
+      --shadow: 0 12px 40px rgba(0,0,0,.35);
     }
 
-    /* Canvas nền */
-    #particles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      background-size: 400% 400%;
-      animation: gradientMove 20s ease infinite;
+    *{ box-sizing: border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      overflow: hidden; /* giữ nền gọn gàng */
     }
 
-    @keyframes gradientMove {
-      0% {background-position: 0% 50%;}
-      50% {background-position: 100% 50%;}
-      100% {background-position: 0% 50%;}
+    /* Neon gradient background */
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      background: linear-gradient(120deg, #0f0c29, #302b63, #24243e);
+      z-index:-3;
+    }
+    /* Animated rainbow overlay */
+    body::after{
+      content:"";
+      position:fixed; inset:-20% -20% -20% -20%;
+      background: conic-gradient(from 0deg, #7f00ff, #00e5ff, #ff4ecf, #7f00ff);
+      filter: blur(120px) saturate(140%);
+      opacity:.45;
+      animation: spin 30s linear infinite;
+      z-index:-2;
+    }
+    @keyframes spin{ to{ transform: rotate(360deg); } }
+
+    /* Particles canvas */
+    #fx{
+      position:fixed; inset:0; z-index:-1;
     }
 
-    .container {
-      background: rgba(0, 0, 0, 0.6);
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
-      max-width: 600px;
-      animation: slideIn 1.5s ease-out;
+    /* Main layout */
+    .wrap{
+      position:relative;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      padding: clamp(16px, 3vw, 40px);
     }
 
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 20px;
-      animation: textPop 1.5s ease-in-out;
+    .card{
+      width:min(860px, 95vw);
+      background: var(--glass-bg);
+      backdrop-filter: blur(14px) saturate(130%);
+      -webkit-backdrop-filter: blur(14px) saturate(130%);
+      border-radius: var(--glass-br);
+      box-shadow: var(--shadow);
+      padding: clamp(24px, 4vw, 48px);
+      border: 1px solid rgba(255,255,255,.12);
+      transform: translateY(10px);
+      animation: floatIn .9s ease-out forwards;
+    }
+    @keyframes floatIn{ from{opacity:0; transform: translateY(30px) scale(.98);} to{opacity:1; transform: translateY(0) scale(1);} }
+
+    .brand{
+      display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap;
+      margin-bottom: 12px;
+    }
+    .logo{
+      width:56px; height:56px; border-radius:14px;
+      background: radial-gradient(circle at 30% 30%, var(--pink), var(--vio-2));
+      box-shadow: 0 0 18px rgba(255,78,207,.6), inset 0 0 18px rgba(157,78,221,.45);
+    }
+    h1{
+      font-weight:800; letter-spacing:.2px; margin:0;
+      font-size: clamp(28px, 5vw, 44px);
+      background: linear-gradient(90deg, #ffe7ff, #b3d8ff);
+      -webkit-background-clip: text; background-clip:text; color: transparent;
+      text-shadow: 0 0 22px rgba(255,255,255,.25);
+      animation: glow 2.2s ease-in-out infinite alternate;
+    }
+    @keyframes glow{ from{ filter: drop-shadow(0 0 6px rgba(255,78,207,.65)); } to{ filter: drop-shadow(0 0 10px rgba(0,229,255,.75)); } }
+
+    .subtitle{
+      color: var(--muted);
+      font-weight:400; line-height:1.65; margin: 6px 0 22px;
     }
 
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 30px;
-      line-height: 1.6;
-      animation: fadeInUp 2s ease-in-out;
-    }
+    .typing{ color:#fff; font-weight:600 }
 
-    .btn {
-      display: inline-block;
-      padding: 15px 30px;
-      font-size: 1.2rem;
-      color: white;
-      background: #5865F2;
-      text-decoration: none;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-      transition: 0.3s;
-      animation: pulse 2s infinite;
+    .cta{
+      display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin: 22px 0 8px;
     }
+    .btn{
+      --bg1: var(--blue); --bg2:#404EED;
+      position:relative; isolation:isolate; cursor:pointer;
+      border:none; outline:none; text-decoration:none; color:white; font-weight:600;
+      padding: 14px 22px; border-radius:14px; min-width: 220px; text-align:center;
+      background: linear-gradient(90deg, var(--bg1), var(--bg2));
+      box-shadow: 0 10px 28px rgba(64,78,237,.35);
+      transition: transform .18s ease, filter .2s ease;
+    }
+    .btn:hover{ transform: translateY(-2px) scale(1.03); filter: brightness(1.1); }
+    .btn:active{ transform: translateY(0) scale(.99); }
 
-    .btn:hover {
-      background: #404EED;
-      transform: scale(1.1);
-    }
+    .btn.secondary{ --bg1:#ff4ecf; --bg2:#9d4edd; box-shadow: 0 10px 28px rgba(157,78,221,.35); }
 
-    /* Hiệu ứng chữ */
-    @keyframes slideIn {
-      from { transform: translateY(50px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+    .features{
+      display:grid; gap:12px; grid-template-columns: repeat( auto-fit, minmax(220px,1fr) );
+      margin-top: 26px;
     }
-    @keyframes textPop {
-      0% { transform: scale(0.5); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
+    .feat{
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px; padding: 14px 16px; text-align:left;
     }
-    @keyframes fadeInUp {
-      from { transform: translateY(30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+    .feat b{ color:#fff }
+
+    .footer{
+      margin-top: 18px; color: var(--muted); font-size: .95rem;
     }
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
-    }
+    .footer a{ color:#ffd6ff; text-decoration:none }
+    .footer a:hover{ text-decoration:underline }
+
+    /* small helper */
+    .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0; }
   </style>
 </head>
 <body>
-  <!-- Nền hạt -->
-  <canvas id="particles"></canvas>
+  <canvas id="fx" aria-hidden="true"></canvas>
 
-  <div class="container">
-    <h1>👑 VioGPT</h1>
-    <p>Bot lấy api key free nên như chatgpt nhé các eiu :P <br>
-    Tham gia ngay để trải nghiệm!</p>
-    <a class="btn" href="https://discord.com/oauth2/authorize?client_id=1401549735109857320" target="_blank">🚀 Mời Bot Vào Server</a>
-    <br><br>
-    <a class="btn" href="https://discord.gg/TgFNTnYRBK" target="_blank">🌐 Support Server</a>
-    <p style="margin-top:20px; font-size:0.9rem; color:#bbb;">Developed by <b>khangshark123</b></p>
-  </div>
+  <main class="wrap">
+    <section class="card" aria-label="Giới thiệu bot VioGPT">
+      <div class="brand" aria-hidden="true">
+        <div class="logo" role="img" aria-label="VioGPT logo"></div>
+        <h1>VioGPT</h1>
+      </div>
+      <p class="subtitle">
+        Bot Discord AI miễn phí — trò chuyện như ChatGPT, chơi game mini, quản trị server, nhiệm vụ & kinh tế ảo.
+        <span class="typing" id="typing"></span>
+      </p>
 
-  <!-- Script tạo particle -->
+      <div class="cta">
+        <a class="btn" href="https://discord.com/oauth2/authorize?client_id=1401549735109857320" target="_blank" rel="noopener">🚀 Thêm Bot Vào Server</a>
+        <a class="btn secondary" href="https://discord.gg/TgFNTnYRBK" target="_blank" rel="noopener">💬 Vào Support Server</a>
+      </div>
+
+      <div class="features" aria-label="Tính năng nổi bật">
+        <div class="feat">💬 <b>AI Chat</b> — trả lời thông minh, hỗ trợ học tập, viết, dịch.</div>
+        <div class="feat">🎮 <b>Mini‑games</b> — tài xỉu, blackjack, bầu cua siêu vui.</div>
+        <div class="feat">🛡️ <b>Quản trị</b> — ban/kick/mute/lock + logs gọn gàng.</div>
+        <div class="feat">💸 <b>Kinh tế & Quest</b> — nhiệm vụ ngày, thưởng, leaderboard.</div>
+        <div class="feat">🎉 <b>Giveaway</b> — sự kiện & auto chúc mừng đỉnh.</div>
+        <div class="feat">⚙️ <b>Tuỳ biến</b> — prefix, quyền hạn, cooldown, tỉ lệ game…</div>
+      </div>
+
+      <p class="footer">Developed by <a href="https://github.com/khangshark123" target="_blank" rel="noopener">khangshark123</a></p>
+    </section>
+  </main>
+
   <script>
-    const canvas = document.getElementById("particles");
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    /* =========================
+       Particles + Lines effect
+       ========================= */
+    const c = document.getElementById('fx');
+    const ctx = c.getContext('2d');
+    let W, H, pts;
+    const DPR = Math.min(window.devicePixelRatio || 1, 2);
 
-    const particles = [];
-    for (let i = 0; i < 100; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        radius: Math.random() * 2,
-        dx: (Math.random() - 0.5) * 0.5,
-        dy: (Math.random() - 0.5) * 0.5
-      });
+    function resize(){
+      W = c.width = Math.floor(innerWidth * DPR);
+      H = c.height = Math.floor(innerHeight * DPR);
+      c.style.width = innerWidth + 'px';
+      c.style.height = innerHeight + 'px';
+      makePts();
     }
 
-    function drawParticles() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
+    function makePts(){
+      const count = Math.floor(Math.min(120, (innerWidth * innerHeight) / 14000));
+      pts = Array.from({length: count}, () => ({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - .5) * .35 * DPR,
+        vy: (Math.random() - .5) * .35 * DPR,
+        r: Math.random() * (2.2 * DPR) + (0.4 * DPR)
+      }));
+    }
+
+    function step(){
+      ctx.clearRect(0,0,W,H);
+      // draw lines (nearby)
+      for(let i=0;i<pts.length;i++){
+        const p = pts[i];
+        for(let j=i+1;j<pts.length;j++){
+          const q = pts[j];
+          const dx = p.x - q.x, dy = p.y - q.y;
+          const d2 = dx*dx + dy*dy;
+          const max = 140 * DPR;
+          if(d2 < max*max){
+            const a = 1 - (Math.sqrt(d2)/ (max));
+            ctx.strokeStyle = `rgba(255,255,255,${0.08 * a})`;
+            ctx.lineWidth = 1 * DPR;
+            ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y); ctx.stroke();
+          }
+        }
+      }
+      // draw dots
+      for(const p of pts){
+        p.x += p.vx; p.y += p.vy;
+        if(p.x < 0 || p.x > W) p.vx *= -1;
+        if(p.y < 0 || p.y > H) p.vy *= -1;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(255,255,255,0.7)";
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle = 'rgba(255,255,255,.75)';
         ctx.fill();
-        p.x += p.dx;
-        p.y += p.dy;
-        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
-      });
-      requestAnimationFrame(drawParticles);
+      }
+      requestAnimationFrame(step);
     }
-    drawParticles();
 
-    window.addEventListener("resize", () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    addEventListener('resize', resize);
+    resize(); step();
+
+    /* =========================
+       Typing effect
+       ========================= */
+    const typingEl = document.getElementById('typing');
+    const messages = [
+      ' — hỗ trợ tiếng Việt mượt mà.',
+      ' — miễn phí, mời vào server là chạy!',
+      ' — nhiều lệnh vui & tiện cho admin.',
+      ' — an toàn, nhanh, gọn, nhẹ.',
+    ];
+    let mi = 0, ci = 0, typing = true;
+
+    function typeLoop(){
+      const text = messages[mi];
+      if(typing){
+        typingEl.textContent = text.slice(0, ++ci);
+        if(ci === text.length){ typing = false; setTimeout(typeLoop, 900); return; }
+      } else {
+        typingEl.textContent = text.slice(0, ci--);
+        if(ci === 0){ typing = true; mi = (mi+1) % messages.length; }
+      }
+      setTimeout(typeLoop, typing ? 28 : 18);
+    }
+    typeLoop();
+
+    /* =========================
+       Subtle parallax on mouse
+       ========================= */
+    const card = document.querySelector('.card');
+    let rafId = null;
+    document.addEventListener('mousemove', (e)=>{
+      if(rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(()=>{
+        const x = (e.clientX / innerWidth - .5) * 6;
+        const y = (e.clientY / innerHeight - .5) * 6;
+        card.style.transform = `translateY(0) rotateX(${ -y }deg) rotateY(${ x }deg)`;
+      });
     });
+    document.addEventListener('mouseleave', ()=>{ card.style.transform = 'translateY(0)'; });
   </script>
 </body>
 </html>
+
+
 
 
